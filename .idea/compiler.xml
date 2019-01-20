@@ -11,18 +11,10 @@
         <module name="ad-gateway" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ad-common" target="1.8" />
-      <module name="ad-eureka" target="1.8" />
-      <module name="ad-gateway" target="1.8" />
-      <module name="ad-service" target="1.8" />
-      <module name="ad-spring-cloud" target="1.8" />
-      <module name="aiolos-ad" target="1.8" />
-      <module name="aiolos-ad-service" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ad-common" options="-parameters" />
       <module name="ad-eureka" options="-parameters" />
       <module name="ad-gateway" options="-parameters" />
     </option>
