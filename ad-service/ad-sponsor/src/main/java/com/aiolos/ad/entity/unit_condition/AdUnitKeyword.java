@@ -14,8 +14,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ad_unit_keywork")
-public class AdUnitKeywork {
+@Table(name = "ad_unit_keyword")
+public class AdUnitKeyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +25,11 @@ public class AdUnitKeywork {
     @Column(name = "unit_id", nullable = false)
     private Long unitId;
 
-    @Column(name = "keywork", nullable = false)
-    private String keywork;
+    @Column(name = "keyword", nullable = false)
+    private String keyword;
 
-    public AdUnitKeywork(Long unitId, String keywork) {
+    public AdUnitKeyword(Long unitId, String keyword) {
         this.unitId = unitId;
-        this.keywork = keywork;
+        this.keyword = keyword;
     }
 }
