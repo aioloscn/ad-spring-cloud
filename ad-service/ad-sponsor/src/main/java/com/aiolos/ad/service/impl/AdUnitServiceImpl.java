@@ -3,18 +3,20 @@ package com.aiolos.ad.service.impl;
 import com.aiolos.ad.constant.Constants;
 import com.aiolos.ad.dao.AdPlanRepository;
 import com.aiolos.ad.dao.AdUnitRepository;
+import com.aiolos.ad.dao.CreativeRepository;
 import com.aiolos.ad.dao.unit_condition.AdUnitDistrictRepository;
 import com.aiolos.ad.dao.unit_condition.AdUnitItRepository;
 import com.aiolos.ad.dao.unit_condition.AdUnitKeywordRepository;
+import com.aiolos.ad.dao.unit_condition.CreativeUnitRepository;
 import com.aiolos.ad.entity.AdPlan;
 import com.aiolos.ad.entity.AdUnit;
 import com.aiolos.ad.entity.unit_condition.AdUnitDistrict;
 import com.aiolos.ad.entity.unit_condition.AdUnitIt;
 import com.aiolos.ad.entity.unit_condition.AdUnitKeyword;
+import com.aiolos.ad.entity.unit_condition.CreativeUnit;
 import com.aiolos.ad.exception.AdException;
 import com.aiolos.ad.service.IAdUnitService;
 import com.aiolos.ad.vo.*;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,14 +42,20 @@ public class AdUnitServiceImpl implements IAdUnitService {
 
     private final AdUnitDistrictRepository unitDistrictRepository;
 
+    private final CreativeRepository creativeRepository;
+
+    private final CreativeUnitRepository creativeUnitRepository;
+
     @Autowired
     public AdUnitServiceImpl(AdPlanRepository planRepository, AdUnitRepository unitRepository, AdUnitKeywordRepository unitKeywordRepository,
-                             AdUnitItRepository unitItRepository, AdUnitDistrictRepository unitDistrictRepository) {
+                             AdUnitItRepository unitItRepository, AdUnitDistrictRepository unitDistrictRepository, CreativeRepository creativeRepository, CreativeUnitRepository creativeUnitRepository) {
         this.planRepository = planRepository;
         this.unitRepository = unitRepository;
         this.unitKeywordRepository = unitKeywordRepository;
         this.unitItRepository = unitItRepository;
         this.unitDistrictRepository = unitDistrictRepository;
+        this.creativeRepository = creativeRepository;
+        this.creativeUnitRepository = creativeUnitRepository;
     }
 
     @Override
@@ -133,11 +141,34 @@ public class AdUnitServiceImpl implements IAdUnitService {
         return new AdUnitDistrictResponse(ids);
     }
 
+    @Override
+    public CreativeUnitResponse createCreativeUnit(CreativeUnitRequest request) throws AdException {
+
+        List<Long> unitIds = request.getUnitItems().stream().map(CreativeUnitRequest.CreativeUnitItem::getUnitId).collect(Collectors.toList());
+        List<Long> creativeIds = request.getUnitItems().stream().map(CreativeUnitRequest.CreativeUnitItem::getCreativeId).collect(Collectors.toList());
+
+        if (!(!isRelatedUnitExist(unitIds) && !isRelatedCreativeExist(creativeIds))) {
+            throw new AdException(Constants.ErrorMsg.REQUEST_PARAM_ERROR);
+        }
+        List<CreativeUnit> creativeUnits = new ArrayList<>();
+        request.getUnitItems().forEach(i -> creativeUnits.add(new CreativeUnit(i.getCreativeId(), i.getUnitId())));
+        List<Long> ids = creativeUnitRepository.saveAll(creativeUnits).stream().map(CreativeUnit::getId).collect(Collectors.toList());
+        return new CreativeUnitResponse(ids);
+    }
+
     private boolean isRelatedUnitExist(List<Long> unitIds) {
 
         if (CollectionUtils.isEmpty(unitIds))
             return false;
         // 用hashSet对入参去重
         return unitRepository.findAllById(unitIds).size() == new HashSet<>(unitIds).size();
+    }
+
+    private boolean isRelatedCreativeExist(List<Long> creativeIds) {
+
+        if (CollectionUtils.isEmpty(creativeIds))
+            return false;
+
+        return creativeRepository.findAllById(creativeIds).size() == new HashSet<>(creativeIds).size();
     }
 }

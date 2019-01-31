@@ -40,4 +40,12 @@ public interface IAdUnitService {
      * @throws AdException
      */
     AdUnitDistrictResponse createUnitDistrict(AdUnitDistrictRequest request) throws AdException;
+
+    /**
+     * 创建创意与推广单元
+     * @param request
+     * @return
+     * @throws AdException
+     */
+    CreativeUnitResponse createCreativeUnit(CreativeUnitRequest request) throws AdException;
 }
