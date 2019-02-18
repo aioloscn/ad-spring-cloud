@@ -17,7 +17,13 @@ public class BinlogRowData {
 
     private EventType eventType;
 
+    /**
+     * 变更后的数据
+     */
     private List<Map<String, String>> after;
 
+    /**
+     * 变更前的数据，目前不使用
+     */
     private List<Map<String, String>> before;
 }

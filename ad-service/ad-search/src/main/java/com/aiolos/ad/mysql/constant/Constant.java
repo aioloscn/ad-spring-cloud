@@ -39,7 +39,7 @@ public class Constant {
 
         public static final String TABLE_NAME = "ad_unit";
 
-        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_ID = "id";            // unitId
         public static final String COLUMN_UNIT_STATUS = "unit_status";
         public static final String COLUMN_POSITION_TYPE = "position_type";
         public static final String COLUMN_PLAN_ID = "plan_id";
