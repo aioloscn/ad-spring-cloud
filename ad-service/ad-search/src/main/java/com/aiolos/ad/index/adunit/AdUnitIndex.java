@@ -3,8 +3,9 @@ package com.aiolos.ad.index.adunit;
 import com.aiolos.ad.index.IndexAware;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -15,10 +16,56 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class AdUnitIndex implements IndexAware<Long, AdUnitObject> {
 
+    // k：推广单元的id
     private static Map<Long, AdUnitObject> objectMap;
 
     static {
         objectMap = new ConcurrentHashMap<>();
+    }
+
+    /**
+     * 根据positionType预筛选 AdUnitIds
+     * @param positionType
+     * @return
+     */
+    public Set<Long> match(Integer positionType) {
+
+        Set<Long> adUnitIds = new HashSet<>();
+        objectMap.forEach((k, v) -> {
+            if (AdUnitObject.isAdSlotTypeOK(positionType, v.getPositionType())) {
+                adUnitIds.add(k);
+            }
+        });
+
+        return adUnitIds;
+    }
+
+    /**
+     * 根据推广单元的ids获取对应的索引对象
+     * @param adUnitIds
+     * @return
+     */
+    public List<AdUnitObject> fetch(Collection<Long> adUnitIds) {
+
+        if (CollectionUtils.isEmpty(adUnitIds)) {
+            return Collections.emptyList();
+        }
+
+        List<AdUnitObject> result = new ArrayList<>();
+
+        adUnitIds.forEach(u -> {
+            AdUnitObject object = get(u);
+
+            // 如果通过推广单元的id获取不到对应的推广单元的索引对象
+            if (null == object) {
+                log.error("AdUnitObject not found: {}", u);
+                return;
+            }
+
+            result.add(object);
+        });
+
+        return result;
     }
 
     @Override
