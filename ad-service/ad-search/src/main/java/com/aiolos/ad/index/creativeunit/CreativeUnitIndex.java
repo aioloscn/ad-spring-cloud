@@ -1,12 +1,12 @@
 package com.aiolos.ad.index.creativeunit;
 
 import com.aiolos.ad.index.IndexAware;
+import com.aiolos.ad.index.adunit.AdUnitObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -24,7 +24,7 @@ public class CreativeUnitIndex implements IndexAware<String, CreativeUnitObject>
     // <adId, unitId Set>
     private static Map<Long, Set<Long>> creativeUnitMap;
 
-    // <unitId, adId Set>
+    // <unitId, adId Set>  一个推广单元id对应多个创意id
     private static Map<Long, Set<Long>> unitCreativeMap;
 
     static {
@@ -86,5 +86,24 @@ public class CreativeUnitIndex implements IndexAware<String, CreativeUnitObject>
             creativeSet.remove(value.getAdId());
         }
         log.info("after delete: {}", objectMap);
+    }
+
+    public List<Long> selectAds(List<AdUnitObject> unitObjects) {
+
+        if (CollectionUtils.isEmpty(unitObjects)) {
+            return Collections.emptyList();
+        }
+
+        List<Long> result = new ArrayList<>();
+
+        for (AdUnitObject unitObject : unitObjects) {
+
+            Set<Long> adIds = unitCreativeMap.get(unitObject.getUnitId());
+            if (CollectionUtils.isNotEmpty(adIds)) {
+                result.addAll(adIds);
+            }
+        }
+
+        return result;
     }
 }
