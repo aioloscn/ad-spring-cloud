@@ -36,11 +36,7 @@ public class PreRequestFilter extends ZuulFilter {
     public Object run() throws ZuulException {
 
         RequestContext context = RequestContext.getCurrentContext();
-        HttpServletRequest request = context.getRequest();
-        long startTime = (Long) context.get("startTime");
-        String uri = request.getRequestURI();
-        long duration = System.currentTimeMillis() - startTime;
-        log.info("uri: " + uri + ", duration: " + duration / 100 + "ms");
+        context.set("startTime", System.currentTimeMillis());
         return null;
     }
 }

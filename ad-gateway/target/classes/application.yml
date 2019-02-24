@@ -11,6 +11,10 @@ zuul:
   prefix: /aiolos
   routes:
     sponsor:
-      path: /ad-sponsor/**
-      serviceId: eureka-client-ad-sponsor
+      path: /ad-sponsor/**    #通过网关路由到微服务，请求位该前缀+mapping的value
+      serviceId: eureka-client-ad-sponsor   #ad-sponsor中application.yml配置的spring.application.name
+      strip-prefix: false     #过滤前缀
+    search:
+      path: /ad-search/**
+      serviceId: eureka-client-ad-search
       strip-prefix: false

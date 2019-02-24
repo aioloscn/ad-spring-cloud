@@ -19,6 +19,7 @@ import com.aiolos.ad.search.vo.feature.ItFeature;
 import com.aiolos.ad.search.vo.feature.KeywordFeature;
 import com.aiolos.ad.search.vo.media.AdSlot;
 import com.alibaba.fastjson.JSON;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,15 @@ import java.util.*;
 @Service
 public class SearchImpl implements ISearch {
 
+    public SearchResponse fallback(SearchRequest request, Throwable e) {
+        return null;
+    }
+
+    // fetchAds抛出异常的时候就会执行fallback方法，通过@HystrixCommand中的@EnableCircuitBreaker实现回退
+    // @EnableCircuitBreaker通过aop拦截所有的HystrixCommand注解的方法，将fetchAds方法扔到Hystrix线程池里边
+    // 发生失败的时候通过反射调用fallback方法
     @Override
+    @HystrixCommand(fallbackMethod = "fallback")    // 效率低
     public SearchResponse fetchAds(SearchRequest request) {
 
         // 请求的广告位信息

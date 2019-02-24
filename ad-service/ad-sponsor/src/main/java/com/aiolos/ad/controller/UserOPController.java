@@ -27,7 +27,7 @@ public class UserOPController {
     }
 
     @PostMapping("/create/user")
-    public CreateUserResponse createUser(@RequestBody CreateUserRequest request) throws AdException {
+    public CreateUserResponse createUser(CreateUserRequest request) throws AdException {
 
         log.info("ad-sponsor: createUser -> {}", JSON.toJSONString(request));
         return userService.createUser(request);
