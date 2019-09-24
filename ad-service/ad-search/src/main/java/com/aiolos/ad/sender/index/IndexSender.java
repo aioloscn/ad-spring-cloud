@@ -31,7 +31,7 @@ public class IndexSender implements ISender {
         if (DataLevel.LEVEL2.getLevel().equals(level)) {
             Level2RowData(rowData);
         } else if (DataLevel.LEVEL3.getLevel().equals(level)) {
-            Level2RowData(rowData);
+            Level3RowData(rowData);
         } else if (DataLevel.LEVEL4.getLevel().equals(level)) {
             Level4RowData(rowData);
         } else {
