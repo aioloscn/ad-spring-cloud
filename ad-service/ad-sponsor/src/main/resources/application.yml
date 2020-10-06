@@ -17,11 +17,11 @@ spring:
       hibernate.format_sql: true
     open-in-view: false
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     tomcat:
       max-active: 4
       min-idle: 2
       initial-size: 2
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
 eureka:
   client:
