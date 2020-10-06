@@ -18,10 +18,10 @@ public class BinlogServiceTest {
 //      [10, 10, plan, 1, Tue Jan 01 08:00:00 CST 2019, Tue Jan 01 08:00:00 CST 2019, Tue Jan 01 08:00:00 CST 2019, Tue Jan 01 08:00:00 CST 2019]
 //    ]}
 
-    @Value("${username}")
+    @Value("${spring.datasource.username}")
     private static String username;
 
-    @Value("${password}")
+    @Value("${spring.datasource.password}")
     private static String password;
 
     public static void main(String[] args) throws Exception {
