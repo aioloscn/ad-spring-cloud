@@ -24,3 +24,8 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+ad-service/ad-search/src/main/resources/application-jdbc.yml
+ad-service/ad-search/src/test/resources/application-jdbc.yml
+ad-service/ad-sponsor/src/main/resources/application-jdbc.yml
+ad-service/ad-sponsor/src/test/resources/application-jdbc.yml

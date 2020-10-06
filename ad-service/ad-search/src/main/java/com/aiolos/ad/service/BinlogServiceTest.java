@@ -5,6 +5,7 @@ import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData;
 import com.github.shyiko.mysql.binlog.event.EventData;
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author Aiolos
@@ -17,9 +18,15 @@ public class BinlogServiceTest {
 //      [10, 10, plan, 1, Tue Jan 01 08:00:00 CST 2019, Tue Jan 01 08:00:00 CST 2019, Tue Jan 01 08:00:00 CST 2019, Tue Jan 01 08:00:00 CST 2019]
 //    ]}
 
+    @Value("${username}")
+    private static String username;
+
+    @Value("${password}")
+    private static String password;
+
     public static void main(String[] args) throws Exception {
 
-        BinaryLogClient client = new BinaryLogClient("127.0.0.1", 3306, "root", "aiolos1204285");
+        BinaryLogClient client = new BinaryLogClient("127.0.0.1", 3306, username, password);
 //        client.setBinlogFilename();
 //        client.setBinlogPosition();
         // 从最新的binlog文件的最后一个位置开始监听

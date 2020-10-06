@@ -4,6 +4,9 @@ server:
     context-path: /ad-sponsor
 
 spring:
+  profiles:
+    include:
+    - jdbc
   application:
     name: eureka-client-ad-sponsor
   jpa:
@@ -14,9 +17,6 @@ spring:
       hibernate.format_sql: true
     open-in-view: false
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/ad_data?allowMultiQueries=true&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8
-    username: root
-    password: aiolos1204285
     tomcat:
       max-active: 4
       min-idle: 2
